@@ -56,6 +56,9 @@ fun makeChatWebView(ctx: android.content.Context, url: String, onReady: (WebView
         }
     }
     webChromeClient = WebChromeClient()
+    // При изменении размера (клавиатура) прокручиваем поле ввода в видимую область
+    addOnLayoutChangeListener { v, _, _, _, b, _, _, _, ob -> if (b != ob) (v as WebView).postDelayed({
+        v.evaluateJavascript("(function(){var e=document.activeElement;if(e&&e!==document.body){e.scrollIntoView({block:'end'});}window.dispatchEvent(new Event('resize'));})()", null) }, 150) }
     loadUrl(url); onReady(this)
 }
 

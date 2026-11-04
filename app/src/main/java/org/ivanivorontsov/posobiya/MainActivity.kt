@@ -9,6 +9,7 @@ import android.webkit.WebView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -45,6 +46,7 @@ val Sea = Color(0xFF0B4F8A); val SeaLight = Color(0xFF1E88C7); val Gold = Color(
 class MainActivity : ComponentActivity() {
     private var tabState = mutableIntStateOf(0)
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         Notify.channels(this); Notify.schedule(this)
         if (Build.VERSION.SDK_INT >= 33) requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
@@ -91,7 +93,7 @@ fun App(measures: List<Measure>, gen: String, tab: MutableIntState) {
             }
         }
     ) { pad ->
-        Box(Modifier.padding(pad).fillMaxSize()) {
+        Box(Modifier.fillMaxSize().padding(pad).consumeWindowInsets(pad).imePadding()) {
             val s = selected
             if (s != null) Detail(s, today) { q -> chatSeed = q; selected = null; tab.intValue = 3 }
             else when (tab.intValue) {
